@@ -18,32 +18,29 @@ export const getAllNotes = async () => {
 export const filterNotes = async (query) => {
     let output = []
     const notes = await getAllNotes()
+    console.log({'all notes: ': notes});
     notes.forEach((note) => {
         if (note.content.toLowerCase().includes(query.toLowerCase()))
         {
             output.push(note);
         }
     })
-    if (output.length === 0)
-    {
-        return "No matches"
-    }
     return output;
 }
 
-export const removeNote = async (id) => {
+export const removeNoteById = async (id) => {
     let db = await getDB();
-    let newdb = db;
     for (const [index, note] of db.notes.entries()) //using for of so i can use await
     {
         if (note.id === id)
         {
-            newdb = db.splice(index, 1);
-            await saveDB(newdb);
+            db.notes.splice(index, 1);
+            await saveDB(db);
             return `Note Deleted. (id: ${id})\n`
         }
     }
-    return 'Note not found. No Changes made\n'
+    return console.log('Note not found. No Changes made.\n')
+    
 }
 
 export const removeAllNotes = async () => {
