@@ -1,5 +1,6 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import { createNote, getAllNotes, filterNotes, removeNote, removeAllNotes } from './notes.js'
 
 yargs(hideBin(process.argv))
   .command('new <note>', 'create a new note', yargs => {
@@ -8,7 +9,9 @@ yargs(hideBin(process.argv))
       type: 'string'
     })
   }, async (argv) => {
-    
+    const tags = argv.tags ? argv.tags.split(',').map((tag) => tag.trim()) : [] //should be using regex instead of trim for efficiency but havent learned yet and out of scope for now.
+    const note = await createNote(argv.note, tags)
+    console.log({'New Note Added: ': note})
   })
   .option('tags', {
     alias: 't',
@@ -16,7 +19,7 @@ yargs(hideBin(process.argv))
     description: 'tags to add to the note'
   })
   .command('all', 'get all notes', () => {}, async (argv) => {
-    
+    getAllNotes()
   })
   .command('find <filter>', 'get matching notes', yargs => {
     return yargs.positional('filter', {
@@ -24,7 +27,7 @@ yargs(hideBin(process.argv))
       type: 'string'
     })
   }, async (argv) => {
-    
+    filterNotes(argv);
   })
   .command('remove <id>', 'remove a note by id', yargs => {
     return yargs.positional('id', {
@@ -32,7 +35,7 @@ yargs(hideBin(process.argv))
       description: 'The id of the note you want to remove'
     })
   }, async (argv) => {
-    
+    removeNote(argv)
   })
   .command('web [port]', 'launch website to see notes', yargs => {
     return yargs
@@ -45,7 +48,7 @@ yargs(hideBin(process.argv))
     
   })
   .command('clean', 'remove all notes', () => {}, async (argv) => {
-    
+    removeAllNotes()
   })
   .demandCommand(1)
   .parse()
