@@ -1,9 +1,3 @@
 #!/usr/bin/env node
+import './src/command.js'; //importing a file that doesnt export just executes it. its like use x in php right.
 
-// const note = process.argv.slice(2).join(' ');
-const note = process.argv[2];
-const newNote = {
-    content: note,
-    id: Date.now(),
-}
-console.log(newNote);
