@@ -4,9 +4,9 @@ export const printListOfNotes = (notes) => {
     }
     notes.forEach(({id, content, tags}) => {
         let item = {
-            'id:': id,
-            'content:': content,
-            'tags:': tags
+            tags,
+            id,
+            content,
         }
         console.log(item, '\n');
     })
@@ -20,5 +20,4 @@ export const printEraseMessage = () => {
     console.log('');
     console.log('----------------------------------------');
     console.log('\n');
-
 }

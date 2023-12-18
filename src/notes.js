@@ -34,13 +34,13 @@ export const removeNoteById = async (id) => {
     {
         if (note.id === id)
         {
+            const removed = note;
             db.notes.splice(index, 1);
             await saveDB(db);
-            return `Note Deleted. (id: ${id})\n`
+            return removed;
         }
     }
-    return console.log('Note not found. No Changes made.\n')
-    
+    return null
 }
 
 export const removeAllNotes = async () => {
