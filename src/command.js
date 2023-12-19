@@ -1,7 +1,8 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import { createNote, getAllNotes, filterNotes, removeNoteById, removeAllNotes } from './notes.js'
+import { createNote, getAllNotes, filterNotes, removeNoteById, removeAllNotes, editNoteById } from './notes.js'
 import { printListOfNotes, printEraseMessage } from './utils/viewhelpers.js'
+import { start } from './server.js'
 
 yargs(hideBin(process.argv))
   .command('new <note>', 'create a new note', yargs => {
@@ -49,11 +50,25 @@ yargs(hideBin(process.argv))
         type: 'number'
       })
   }, async (argv) => {
-    
+    const notes = await getAllNotes();
+    let port;
+    argv.port ? port = argv.port : port = 5000
+    start(notes, port)
   })
   .command('clean', 'remove all notes', () => {}, async (argv) => {
     await removeAllNotes()
     return printEraseMessage();
   })
+  .command('edit [id]', 'edit an existing note', yargs => {
+    return yargs
+      .positional('id', {
+        describe: 'id of note to edit',
+        default: 0,
+        type: 'number'
+      })
+  }, async (argv) => {
+    editNoteById(argv.id);
+  })
+  
   .demandCommand(1)
   .parse()

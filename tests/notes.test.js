@@ -36,8 +36,8 @@ describe('notes.js Unit Tests', () => {
         expect(result.content).toEqual(data.content)
         // expect(result).toEqual(data)
     
-        // to equal means == 
-        // to be means === 
+        // toEqual means == 
+        // toBe means === 
     })
 
     test('getAllNotes returns the entire "notes" array from the provided database object', async () => {
